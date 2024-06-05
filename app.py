@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from sklearn.cluster import DBSCAN
 import numpy as np
+import json
 from datetime import datetime
 
 app = Flask(__name__)
@@ -41,7 +42,7 @@ class ParticleFilter:
 def clean_and_process_json_data(json_data):
     cleaned_data = []
     try:
-        data = json_data['data']
+        data = json.loads(json_data)
         for entry in data:
             try:
                 if all(k in entry for k in ["timestamp", "latitude", "longitude"]):
@@ -5077,6 +5078,7 @@ def predict():
 
 '''
     cleaned_data = clean_and_process_json_data(json_data)
+    print(cleaned_data)
 
     if cleaned_data:
         predicted_location = predict_next_location(cleaned_data)
